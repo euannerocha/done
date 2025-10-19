@@ -1,33 +1,32 @@
-// src/components/Card/CardContainer/index.tsx
 import useTodos from "../../../store/useTodos";
 import CardItem from "../CardItem";
 
-const CardContainer = () => {
-  const { todos, toggle, remove } = useTodos((s) => ({
-    todos: s.todos,
-    toggle: s.toggle,
-    remove: s.remove,
-  }));
+function CardContainer() {
+  const todos  = useTodos((s) => s.todos);
+  const toggle = useTodos((s) => s.toggle);
+  const remove = useTodos((s) => s.remove);
+
+  if (!Array.isArray(todos)) return null;
 
   return (
     <div className="flex flex-col space-y-4">
+      {todos.length === 0 && <div className="text-light-gray">Nothing here yet. Let's create a task?</div>}
+
       {todos.map((t) => (
         <CardItem
           key={t.id}
           id={t.id}
-          description={t.content}   // mapeia content -> description para o CardItem
+          description={t.content}
           checked={t.checked}
-          onToggle={() => toggle(t.id)}
-          onDelete={() => remove(t.id)}
+          onToggle={() => toggle(t.id)}  
+          onDelete={() => remove(t.id)}   
         />
       ))}
     </div>
   );
-};
+}
 
 export default CardContainer;
-
-
 
 
 // import { useEffect, useState } from "react";
