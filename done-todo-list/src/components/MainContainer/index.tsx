@@ -1,20 +1,77 @@
+// src/components/MainContainer/index.tsx
+import { useState } from "react";
 import GenericButton from "../Button/GenericButton";
 import IconButton from "../Button/IconButton";
 import CardContainer from "../Card/CardContainer";
+import AddButton from "../Button/AddButton";
+import Modal from "../Modal";
+import useTodos from "../../store/useTodos";
 
 function MainContainer() {
-    return (
-        <div className="absolute top-28 w-[60vw] flex-row right-10">
-            <div className="flex justify-between mb-16">
-                <h2>To-do List</h2>
-                <div className="flex gap-2">
-                    <GenericButton text={"Clean All"} bgColor={"bg-light-red-1"} textColor={"text-dark-red"} onClick={() => { }} />
-                    <IconButton text={"A-Z"} bgColor={"bg-light-primary-2"} textColor={"text-primary"} onClick={() => { }} />
-                </div>
-            </div>
-            <CardContainer />
+  const [isOpen, setIsOpen] = useState(false);
+  const add = useTodos((s) => s.add);
+
+  return (
+    <div className="absolute top-28 w-[60vw] right-10">
+      <div className="flex justify-between mb-16">
+        <h2>To-do List</h2>
+        <div className="flex gap-2">
+          <GenericButton
+            text="Clean All"
+            bgColor="bg-[--color-light-orange-1]"
+            textColor="text-[--color-dark-red]"
+            onClick={() => { /* clearAll() se quiser */ }}
+          />
+          <IconButton
+            text="A-Z"
+            bgColor="bg-[--color-light-primary-2]"
+            textColor="text-[--color-primary]"
+            onClick={() => { /* sort depois */ }}
+          />
         </div>
-    )
+      </div>
+
+      <CardContainer />
+
+      <div className="hidden md:block">
+        <AddButton desktop="desktop" onClick={() => setIsOpen(true)} />
+      </div>
+      <div className="md:hidden mt-4">
+        <AddButton onClick={() => setIsOpen(true)} desktop={"desktop"} />
+      </div>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onAdd={(content) => add(content)}
+        bgColor="bg-light-pink-2"
+      />
+    </div>
+  );
 }
 
 export default MainContainer;
+
+
+
+
+// import GenericButton from "../Button/GenericButton";
+// import IconButton from "../Button/IconButton";
+// import CardContainer from "../Card/CardContainer";
+
+// function MainContainer() {
+//     return (
+//         <div className="absolute top-28 w-[60vw] flex-row right-10">
+//             <div className="flex justify-between mb-16">
+//                 <h2>To-do List</h2>
+//                 <div className="flex gap-2">
+//                     <GenericButton text={"Clean All"} bgColor={"bg-light-red-1"} textColor={"text-dark-red"} onClick={() => { }} />
+//                     <IconButton text={"A-Z"} bgColor={"bg-light-primary-2"} textColor={"text-primary"} onClick={() => { }} />
+//                 </div>
+//             </div>
+//             <CardContainer />
+//         </div>
+//     )
+// }
+
+// export default MainContainer;
