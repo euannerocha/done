@@ -3,6 +3,7 @@ export interface GenericButton {
     bgColor: string;
     textColor: string;
     onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    disabled?: boolean;
 }
 
 export interface AddButton {

@@ -4,10 +4,13 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type { Todo, TodoList } from "../types/todo";
 import { fetchInitialTodos } from "../lib/api";
 
+type SortMode = "none" | "asc" | "desc"
+
 type State = {
   todos: TodoList;
   loading: boolean;
   initialized: boolean;
+  sortMode: SortMode;
 };
 
 type Actions = {
@@ -16,6 +19,7 @@ type Actions = {
   toggle: (id: number) => void;
   remove: (id: number) => void;
   clearAll: () => void;
+  cycleSortMode: () => void;
 };
 
 const useTodos = create<State & Actions>()(
@@ -24,16 +28,21 @@ const useTodos = create<State & Actions>()(
       todos: [],
       loading: false,
       initialized: false,
+      sortMode: "none",
 
       init: async () => {
-        if (get().initialized) return;
-        set({ initialized: true });
-        if (get().todos.length > 0) return;
+        if (get().initialized) return;              
+        if (get().todos.length > 0) {               
+          set({ initialized: true });               
+          return;
+        }
 
         set({ loading: true });
         try {
           const data = await fetchInitialTodos();
-          set({ todos: data });
+          set({ todos: data, initialized: true });
+        } catch (e) {
+          console.warn("Failing to seed the endpoint:", e);
         } finally {
           set({ loading: false });
         }
@@ -56,11 +65,18 @@ const useTodos = create<State & Actions>()(
         set((s) => ({ todos: s.todos.filter((t) => t.id !== id) })),
 
       clearAll: () => set({ todos: [] }),
+
+       cycleSortMode: () => {
+        const next =
+          get().sortMode === "none" ? "asc" :
+          get().sortMode === "asc"  ? "desc" : "none";
+        set({ sortMode: next });
+      },
     }),
     {
       name: "done-todos",
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => ({ todos: s.todos }),
+      partialize: (s) => ({ todos: s.todos, initialized: s.initialized }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
           console.warn("Rehydrate falhou, limpando storage:", error);

@@ -9,7 +9,15 @@ import useTodos from "../../store/useTodos";
 
 function MainContainer() {
   const [isOpen, setIsOpen] = useState(false);
+
   const add = useTodos((s) => s.add);
+  const clearAll = useTodos((s) => s.clearAll);
+  const cycleSort = useTodos((s) => s.cycleSortMode);
+  const hasTodos = useTodos((s) => s.todos.length > 0);
+  const sortMode = useTodos((s) => s.sortMode);
+
+  const isActive = sortMode !== "none";
+  const label = sortMode === "desc" ? "Z-A" : "A-Z";
 
   return (
     <div className="absolute top-28 w-[60vw] right-10">
@@ -17,16 +25,18 @@ function MainContainer() {
         <h2>To-do List</h2>
         <div className="flex gap-2">
           <GenericButton
-            text="Clean All"
-            bgColor="bg-[--color-light-orange-1]"
-            textColor="text-[--color-dark-red]"
-            onClick={() => { /* clearAll() se quiser */ }}
+            text="Clear All"
+            bgColor="bg-light-orange-1"
+            textColor="text-dark-red"
+            onClick={() => { if (confirm("Clear all tasks?")) clearAll(); }}
+            disabled={!hasTodos}
           />
           <IconButton
-            text="A-Z"
-            bgColor="bg-[--color-light-primary-2]"
-            textColor="text-[--color-primary]"
-            onClick={() => { /* sort depois */ }}
+            text={label}
+            bgColor={isActive ? "bg-light-primary-1" : "bg-light-primary-2"}
+            textColor={isActive ? "text-white" : "text-primary"}
+            onClick={cycleSort}
+            disabled={!hasTodos}
           />
         </div>
       </div>

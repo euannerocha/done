@@ -1,25 +1,43 @@
+import { useMemo } from "react";
 import useTodos from "../../../store/useTodos";
 import CardItem from "../CardItem";
 
 function CardContainer() {
-  const todos  = useTodos((s) => s.todos);
+  const todos = useTodos((s) => s.todos);
+  const sortMode = useTodos((s) => s.sortMode);
   const toggle = useTodos((s) => s.toggle);
   const remove = useTodos((s) => s.remove);
+
+  const collator = useMemo(
+    () => new Intl.Collator(undefined, { sensitivity: "base", numeric: true }),
+    []
+  );
+
+  const list = useMemo(() => {
+    if (sortMode === "none") return todos;
+    const cpy = [...todos];
+    cpy.sort((a, b) =>
+      sortMode === "asc"
+        ? collator.compare(a.content, b.content)
+        : collator.compare(b.content, a.content)
+    );
+    return cpy;
+  }, [todos, sortMode, collator]);
 
   if (!Array.isArray(todos)) return null;
 
   return (
     <div className="flex flex-col space-y-4">
-      {todos.length === 0 && <div className="text-light-gray">Nothing here yet. Let's create a task?</div>}
+      {list.length === 0 && <div className="text-light-gray">{"No tasks here :( Let's create one?"}</div>}
 
-      {todos.map((t) => (
+      {list.map((t) => (
         <CardItem
           key={t.id}
           id={t.id}
           description={t.content}
           checked={t.checked}
-          onToggle={() => toggle(t.id)}  
-          onDelete={() => remove(t.id)}   
+          onToggle={() => toggle(t.id)}
+          onDelete={() => remove(t.id)}
         />
       ))}
     </div>
