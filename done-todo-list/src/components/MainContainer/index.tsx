@@ -1,4 +1,3 @@
-// src/components/MainContainer/index.tsx
 import { useState } from "react";
 import GenericButton from "../Button/GenericButton";
 import IconButton from "../Button/IconButton";
@@ -15,6 +14,10 @@ function MainContainer() {
   const cycleSort = useTodos((s) => s.cycleSortMode);
   const hasTodos = useTodos((s) => s.todos.length > 0);
   const sortMode = useTodos((s) => s.sortMode);
+  // const uncheckedTodos = useTodos((s) => s.todos.filter((t) => !t.checked));
+  const uncheckedCount = useTodos((s) =>
+  s.todos.reduce((acc, t) => acc + (t.checked ? 0 : 1), 0)
+);
 
   const isActive = sortMode !== "none";
   const label = sortMode === "desc" ? "Z-A" : "A-Z";
@@ -22,7 +25,12 @@ function MainContainer() {
   return (
     <div className="absolute top-28 w-[60vw] right-10">
       <div className="flex items-center justify-between mb-8">
-        <h2>To-do List</h2>
+        <div className="flex gap-1.5">
+          <h2>To-do List</h2>
+          <div className="bg-light-primary-2 rounded-full px-2 flex items-center">
+            <p className="text-primary font-thin text-[0.75rem]">{uncheckedCount}</p>
+          </div>
+        </div>
         <div className="flex gap-3 box">
           <GenericButton
             text="Clear All"
@@ -61,27 +69,3 @@ function MainContainer() {
 }
 
 export default MainContainer;
-
-
-
-
-// import GenericButton from "../Button/GenericButton";
-// import IconButton from "../Button/IconButton";
-// import CardContainer from "../Card/CardContainer";
-
-// function MainContainer() {
-//     return (
-//         <div className="absolute top-28 w-[60vw] flex-row right-10">
-//             <div className="flex justify-between mb-16">
-//                 <h2>To-do List</h2>
-//                 <div className="flex gap-2">
-//                     <GenericButton text={"Clean All"} bgColor={"bg-light-red-1"} textColor={"text-dark-red"} onClick={() => { }} />
-//                     <IconButton text={"A-Z"} bgColor={"bg-light-primary-2"} textColor={"text-primary"} onClick={() => { }} />
-//                 </div>
-//             </div>
-//             <CardContainer />
-//         </div>
-//     )
-// }
-
-// export default MainContainer;
