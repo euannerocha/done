@@ -6,7 +6,6 @@ import SideContainer from "../components/SideContainer";
 
 function Home() {
     const init = useTodos((s) => s.init);
-    const loading = useTodos((s) => s.loading);
 
     useEffect(() => { init(); }, [init]);
 
