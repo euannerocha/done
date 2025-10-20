@@ -29,3 +29,23 @@
 body {
   font-family: var(--font-lexend-deca);
 }
+
+@layer utilities {
+  .scrollbar-primary {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+  }
+  .scrollbar-primary::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-primary::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-primary::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    border-radius: 9999px;
+  }
+  .scrollbar-primary::-webkit-scrollbar-thumb:hover {
+    filter: brightness(0.9);
+  }
+}

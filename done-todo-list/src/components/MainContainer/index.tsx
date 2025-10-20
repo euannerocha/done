@@ -21,9 +21,9 @@ function MainContainer() {
 
   return (
     <div className="absolute top-28 w-[60vw] right-10">
-      <div className="flex justify-between mb-16">
+      <div className="flex items-center justify-between mb-8">
         <h2>To-do List</h2>
-        <div className="flex gap-2">
+        <div className="flex gap-3 box">
           <GenericButton
             text="Clear All"
             bgColor="bg-light-orange-1"
@@ -54,7 +54,7 @@ function MainContainer() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onAdd={(content) => add(content)}
-        bgColor="bg-light-pink-2"
+        bgColor="bg-primary"
       />
     </div>
   );

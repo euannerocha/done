@@ -20,23 +20,3 @@ function Home() {
 }
 
 export default Home;
-
-
-
-
-// tirei o modal daqui
-// import Header from "../components/Header";
-// import MainContainer from "../components/MainContainer";
-// import SideContainer from "../components/SideContainer";
-
-// function Home() {
-//     return (
-//         <div className="">
-//             <Header />
-//             <MainContainer />
-//             <SideContainer />
-//         </div>
-//     )
-// }
-
-// export default Home;

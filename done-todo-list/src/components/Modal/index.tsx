@@ -2,15 +2,24 @@ import { useState } from "react";
 import GenericButton from "../Button/GenericButton";
 import { ModalProps } from "./Modal.types";
 
-function Modal({ isOpen, onClose, onAdd, bgColor = "bg-[--color-light-pink-2]" }: ModalProps) {
+function Modal({ isOpen, onClose, onAdd, bgColor }: ModalProps) {
   const [description, setDescription] = useState("");
 
   if (!isOpen) return null;
 
+  const isDisabled = description.trim().length === 0;
+
+  // const handleAddCard = () => {
+  //   const text = description.trim();
+  //   if (!text) return;
+  //   onAdd(text);     
+  //   setDescription("");
+  //   onClose();
+  // };
+
   const handleAddCard = () => {
-    const text = description.trim();
-    if (!text) return;
-    onAdd(text);     
+    if (isDisabled) return;
+    onAdd(description.trim());
     setDescription("");
     onClose();
   };
@@ -43,6 +52,7 @@ function Modal({ isOpen, onClose, onAdd, bgColor = "bg-[--color-light-pink-2]" }
           bgColor="bg-light-primary-2"
           textColor="text-primary"
           onClick={handleAddCard}
+          disabled={isDisabled} 
         />
       </div>
     </div>
