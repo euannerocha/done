@@ -1,27 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GenericButton from "../Button/GenericButton";
 import { ModalProps } from "./Modal.types";
 
 function Modal({ isOpen, onClose, onAdd, bgColor }: ModalProps) {
   const [description, setDescription] = useState("");
 
+  useEffect(() => {
+    if (!isOpen) setDescription("");
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const isDisabled = description.trim().length === 0;
-
-  // const handleAddCard = () => {
-  //   const text = description.trim();
-  //   if (!text) return;
-  //   onAdd(text);     
-  //   setDescription("");
-  //   onClose();
-  // };
 
   const handleAddCard = () => {
     if (isDisabled) return;
     onAdd(description.trim());
     setDescription("");
     onClose();
+  };
+
+  const handleCancel = () => {
+    setDescription("");  
+    onClose();            
   };
 
   return (
@@ -45,14 +46,14 @@ function Modal({ isOpen, onClose, onAdd, bgColor }: ModalProps) {
           text="Cancel"
           bgColor="bg-dark-red"
           textColor="text-light-pink-2"
-          onClick={onClose}
+          onClick={handleCancel}
         />
         <GenericButton
           text="Add"
           bgColor="bg-light-primary-2"
           textColor="text-primary"
           onClick={handleAddCard}
-          disabled={isDisabled} 
+          disabled={isDisabled}
         />
       </div>
     </div>
