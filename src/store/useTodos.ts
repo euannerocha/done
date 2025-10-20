@@ -85,7 +85,7 @@ const useTodos = create<State & Actions>()(
       name: "done-todos",
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({ todos: s.todos, initialized: s.initialized }),
-      onRehydrateStorage: () => (state, error) => {
+      onRehydrateStorage: () => (_, error) => {
         if (error) {
           console.warn("Rehydrate falhou, limpando storage:", error);
           try { localStorage.removeItem("done-todos"); } catch { }
