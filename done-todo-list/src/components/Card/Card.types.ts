@@ -10,4 +10,5 @@ export type CardItemProps = {
     checked?: boolean;
     onToggle?: () => void;
     onDelete?: () => void;
+    onEdit?: (newContent: string) => void;
 };
