@@ -13,7 +13,7 @@ function Home() {
     return (
         <div>
             <Header />
-            {loading ? <div className="p-4">Carregando…</div> : <MainContainer />}
+            <MainContainer />
             <SideContainer />
         </div>
     );
